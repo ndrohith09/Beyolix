@@ -25,10 +25,6 @@ app.add_middleware(
     allow_headers=["*"],
 ) 
 
-print(os.environ['REGION_NAME'])
-print(os.environ['AWS_ACCESS_KEY_ID'])
-print(os.environ['AWS_SECRET_ACCESS_KEY'])
-
 def getReactions(drugName):
     url = f'https://api.fda.gov/drug/event.json?search=patient.drug.medicinalproduct:"{drugName}"'
     results = requests.get(url).json()['results']
@@ -72,17 +68,17 @@ async def create_upload_file(file: UploadFile):
     imageBytes = bytearray(file_bytes) 
 
     textract = boto3.client('textract' , 
-    region_name = os.environ['REGION_NAME'],
-    aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-    aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
+    region_name = "us-east-1",
+    aws_access_key_id="AKIAXKSSZE6XKZRKRQZJ",
+    aws_secret_access_key="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"
 )
     response = textract.detect_document_text(
     Document={
             'Bytes': imageBytes,
-        'S3Object': { 
-            'Bucket': 'comprehend-09',
-            'Name': file.filename
-        }
+        # 'S3Object': { 
+        #     'Bucket': os.environ['BUCKET_NAME'],
+        #     'Name': file.filename
+        # }
     }) 
 
     text = ""
@@ -93,9 +89,10 @@ async def create_upload_file(file: UploadFile):
 
     # Amazon Comprehend client
     comprehend = boto3.client('comprehendmedical',
-    region_name = os.environ['REGION_NAME'],
-    aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-    aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
+        region_name = "us-east-1",
+    aws_access_key_id="AKIAXKSSZE6XKZRKRQZJ",
+    aws_secret_access_key="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"
+    )
     rxnorm = comprehend.infer_rx_norm(Text = text) 
     tablets = []
     
