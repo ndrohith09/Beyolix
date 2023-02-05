@@ -69,8 +69,8 @@ async def create_upload_file(file: UploadFile):
 
     textract = boto3.client('textract' , 
     region_name = "us-east-1",
-    aws_access_key_id="AKIAXKSSZE6XKZRKRQZJ",
-    aws_secret_access_key="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"
+    aws_access_key_id="***",
+    aws_secret_access_key="***"
 )
     response = textract.detect_document_text(
     Document={
@@ -90,8 +90,8 @@ async def create_upload_file(file: UploadFile):
     # Amazon Comprehend client
     comprehend = boto3.client('comprehendmedical',
         region_name = "us-east-1",
-    aws_access_key_id="AKIAXKSSZE6XKZRKRQZJ",
-    aws_secret_access_key="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"
+    aws_access_key_id="***",
+    aws_secret_access_key="***"
     )
     rxnorm = comprehend.infer_rx_norm(Text = text) 
     tablets = []
